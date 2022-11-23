@@ -91,4 +91,29 @@ class UserController extends Controller
         // $user["password"] = \Hash::make($request["password"]);
         // User::create($user);
     }
+
+    public function edit($id)
+    {
+        $users = User::find($id);
+
+        $users_status = \DB::table("users_status")
+            ->select(
+                "id as value",
+                "name as label"
+            )
+            ->get();
+        
+        $departments = \DB::table("departments")
+            ->select(
+                "id as value",
+                "name as label"
+            )
+            ->get();
+
+        return response()->json([
+            "users" => $users,
+            "users_status" => $users_status,
+            "departments" => $departments
+        ]);
+    }
 }
