@@ -136,6 +136,14 @@ class UserController extends Controller
             "department_id.required" => "Nhập Phòng ban"
         ]);
 
+        User::find($id)->update([
+            "status_id" => $request["status_id"],
+            "username" => $request["username"],
+            "name" => $request["name"],
+            "email" => $request["email"],
+            "department_id" => $request["department_id"]
+        ]);
+
         if($request["change_password"] == true)
         {
             $validated = $request->validate([
@@ -143,6 +151,11 @@ class UserController extends Controller
             ], [
                 "password.required" => "Nhập Mật khẩu",
                 "password.confirmed" => "Mật khẩu và Xác nhận mật khẩu không khớp"
+            ]);
+
+            User::find($id)->update([
+                "password" => \Hash::make($request["password"]),
+                "change_password_at" => NOW()
             ]);
         }
     }
